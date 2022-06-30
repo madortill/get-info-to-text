@@ -1,0 +1,94 @@
+@font-face {
+    font-family: Heebo;
+    src: url("assets/fonts/Heebo-VariableFont_wght.ttf");
+}
+
+* {
+    font-family: "Heebo";
+}
+
+html,
+body {
+    height: 100%;
+    width: 100%;
+    margin: 0;
+    direction: rtl;
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+body {
+    background: linear-gradient(221deg, rgb(251, 195, 203) 20%, rgb(224, 186, 224) 60%);
+    /* background: linear-gradient(221deg, orange 5%, rgb(253, 201, 103) 40%, rgb(238, 238, 153) 80%); */
+    background-size: 100% 100%;
+}
+
+.screen {
+    /* margin-top: 20vh; */
+    height: fit-content;
+    text-align: center;
+    height: fit-content;
+    position: absolute;
+    left: 50%;
+    top: 45%;
+    transform: translate(-50%, -50%);
+    width: 95%;
+}
+
+.none {
+    display: none;
+}
+
+.open-text {
+    text-align: center;
+    font-size: 4.5vmin;
+}
+
+
+select {
+    margin: 3vh 1vw 5vh 1vw;
+    font-size: 4vmin;
+    border-radius: 0.2em;
+}
+
+#input-screen input {
+    margin: 3vh 1vw;
+    font-size: 3vmin;
+    border-radius: 0.2em;
+    width: 20vw; 
+}
+
+#input-screen input[type="number"] {
+    width: 6vw;
+}
+
+select:disabled,
+button:disabled {
+    background-color: rgb(251, 195, 203);
+}
+
+/* option {
+    background-color: blueviolet;
+    border-radius: 2.5em;
+    border: none;
+} */
+
+.input-screen {
+    display: none;
+}
+
+.btn {
+    font-size: 3vmin;
+    display: block;
+    margin: 2vh auto;
+    border-radius: 0.2em;
+    border: solid 1px;
+    padding: 1vh 5vw;
+    background-color: rgb(196, 104, 196);
+}
+
+.question-num {
+    font-size: 2vmin;
+    margin-bottom: 1vh;
+}

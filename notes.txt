@@ -1,0 +1,31 @@
+- make generic code to sortToGroups
+- make generic code to complete sentences
+
+specials: 
+* rules: rule + is true? and sortToGroups 
+* tools - assign to a tool (could be inside the project)
+* hangman?
+* notes - open questions + notes
+* commanders - array of quotes
+
+
+ "tillder": {
+        "amountOfQuestions": 2 /**ENTER NUM**/, // how many questions will actualy appear
+        "appContent":  [
+            {
+                "type": "binary",
+                "src": "./assets/images/dog.jpg",
+                "question": "ENTER TEXT",
+                "correctAns": ENTER BOOLEAN,
+                "selectedAns": "", /* DO NOT TOUCH*/
+            },
+            {
+                "type": "binary",
+                "src": "./assets/images/exemple6.jpg",
+                "question": "ENTER TEXT",
+                "correctAns": ENTER BOOLEAN,
+                "selectedAns": "", /* DO NOT TOUCH*/
+            },
+        ],
+    }
+}
