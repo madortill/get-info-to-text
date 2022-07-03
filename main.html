@@ -15,13 +15,13 @@
     <div class="screen" id="open-screen">
         <div class="open-text">ברוכים הבאים! כאן תוכלו להכניס את השאלות שיופיעו בחדר הבריחה.</div>
         <div class="open-text">לפני שנתחיל, תבחרו את הבה"ד שלכם, את הקורס ואת הלומדה שאתם רוצים לכתוב להם שאלות</div>
-        <select class="bahad" id="bahad" name="bahad">
+        <select class="bahad dropdown" id="bahad" name="bahad">
             <option value="" disabled selected>מאיזה בה"ד אתם?</option>
         </select>
-        <select class="course" id="course" name="course" disabled>
+        <select class="course dropdown" id="course" name="course" disabled>
             <option value="" disabled selected>איזה קורס אתם מעבירים?</option>
         </select>
-        <select class="lomda" id="lomda" name="lomda" disabled>
+        <select class="lomda dropdown" id="lomda" name="lomda" disabled>
             <option value="" disabled selected>לאיזו לומדה תרצו להכניס שאלות?</option>
         </select>
         <button id="to-input" class="btn" disabled>סיימתי!</button>
@@ -29,47 +29,53 @@
     <div class="screen none" id="input-screen">
         <div class="open-text">הכניסו את השאלה כדי להמשיך!</div>
         <div class="question-num" id="question-num"></div>
-        <div class="none" id="multiple-screen">
-            <div>
-                <label for="multiple-question" class="open-text">שאלה:</label>
-                <input id="multiple-question" type="text">
-            </div>
-            <div>
-                <label for="ans1" class="open-text">תשובה 1:</label>
-                <input id="ans1" type="text">
+        <label for="type-of-question" class="open-text">בחרו את סוג השאלה המבוקש</label>
+        <select id="type-of-question" class="dropdown">
+            <option value="" disabled selected>בחרו</option>
+            <option value="binary">שאלת נכון/לא נכון</option>
+            <option value="multiple">שאלה אמריקאית</option>
+        </select>
+            <div class="none" id="multiple-screen">
+                <div>
+                    <label for="multiple-question" class="open-text">שאלה:</label>
+                    <input id="multiple-question" type="text" class="text-input">
+                </div>
+                <div>
+                    <label for="ans1" class="open-text">תשובה 1:</label>
+                    <input id="ans1" type="text" class="text-input">
 
-                <label for="ans2" class="open-text">תשובה 2:</label>
-                <input id="ans2" type="text">
-            </div>
-            <div>
-                <label for="ans3" class="open-text">תשובה 3:</label>
-                <input id="ans3" type="text">
+                    <label for="ans2" class="open-text">תשובה 2:</label>
+                    <input id="ans2" type="text" class="text-input">
+                </div>
+                <div>
+                    <label for="ans3" class="open-text">תשובה 3:</label>
+                    <input id="ans3" type="text" class="text-input">
 
-                <label for="ans4" class="open-text">תשובה 4:</label>
-                <input id="ans4" type="text">
+                    <label for="ans4" class="open-text">תשובה 4:</label>
+                    <input id="ans4" type="text" class="text-input">
+                </div>
+                <div>
+                    <label for="correctAns" class="open-text">איזו תשובה היא הנכונה?</label>
+                    <input id="correctAns" type="number" min="1" max="4" class="num-input text-input"">
+                </div>
             </div>
-            <div>
-                <label for="correctAns" class="open-text">איזו תשובה היא הנכונה?</label>
-                <input id="correctAns" type="number" min="1" max="4">
-            </div>
+            <div class=" none" id="binary-screen">
+                    <div>
+                        <label for="binary-question" class="open-text">שאלה:</label>
+                        <input id="binary-question" type="text" class="text-input">
+                    </div>
+                    <label for="binary-ans" class="open-text">תשובה:</label>
+                    <select id="binary-ans" class="dropdown">
+                        <option value="" disabled selected>בחרו</option>
+                        <option value="true">נכון</option>
+                        <option value="false">לא נכון</option>
+                    </select>
+                </div>
+                <button id="submit" class="btn">הוספה</button>
         </div>
-        <div class="none" id="binary-screen">
-            <div>
-                <label for="binary-question" class="open-text">שאלה:</label>
-                <input id="binary-question" type="text">
-            </div>
-            <div>
-                <label for="binary-ans" class="open-text">תשובה:</label>
-                <select id="binary-ans" type="text">
-                    <option value="true">נכון</option>
-                    <option value="false">לא נכון</option>
-                </select>
-            </div>
+        <div id="finish-screen" class="none">
+            <a download="questions.txt" id="downloadlink" style="display: none">Download</a>
         </div>
-        <button id="submit" class="btn">הוספה</button>
-        <a download="questions.txt" id="downloadlink" style="display: none">Download</a>
-    </div>
-    <div id="finish-screen" class="none"></div>
 </body>
 
 </html>

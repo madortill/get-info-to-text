@@ -10,9 +10,9 @@ const COURSES = {
 };
 
 const LOMDOT = {
-  tools: { name: "כלים", questions: { multiple: 12 } },
-  mitztainim: { name: "מצטיינים", questions: { multiple: 5, binary: 1 } },
-  davidShower: { name: "דוד מתקלח", questions: {multiple: 5, binary: 5 } }
+  tools: { name: "כלים", questions: 24 },
+  mitztainim: { name: "מצטיינים", questions: 6 },
+  davidShower: { name: "דוד מתקלח", questions: 10 },
 };
 const QUESTION_TYPES = ["multiple", "binary"];
 let questionObj;
@@ -108,25 +108,9 @@ const toInput = () => {
   questionCounter = 0;
   currQuestionCounter = 0;
   document.getElementById("open-screen").style.display = "none";
-  maxQuestions = 0;
-  questionStyle = QUESTION_TYPES[0];
-
-  let currIndex;
-  while (LOMDOT[currLomda]["questions"][questionStyle] === undefined) {
-    currIndex = QUESTION_TYPES.findIndex(item => item === questionStyle) + 1;
-    questionStyle = QUESTION_TYPES[currIndex];
-    if (currIndex === QUESTION_TYPES.length) {
-      throw new Error("שמות השאלות שהוזנו באובייקט הלומדות לא תואמים את שמות השאלות ברשימת השאלות");
-    }
-  }
-
-  // Compute the amount of all the questions
-  for (let key in LOMDOT[currLomda]["questions"]) {
-    maxQuestions += Number(LOMDOT[currLomda]["questions"][key]);
-  }
-  document.getElementById(
-    "question-num"
-  ).innerText = `הכנסת ${questionCounter} שאלות מתוך ${maxQuestions}`;
+  // Computes the amount of all the questions
+  maxQuestions = Number(LOMDOT[currLomda]["questions"]);
+  document.getElementById("question-num").innerText = `הכנסת ${questionCounter} שאלות מתוך ${maxQuestions}`;
   questionObj = {
     [currBahad]: {
       [currCourse]: {
@@ -137,17 +121,36 @@ const toInput = () => {
     },
   };
   document.getElementById("input-screen").style.display = "block";
-  changeInputPage();
+  document.getElementById("type-of-question").addEventListener("input", (event) => {
+    document.getElementById(`${questionStyle}-screen`).style.display = "none";
+    questionStyle = document.getElementById("type-of-question").value;
+    changeInputPage();
+  });
+  // changeInputPage();
   submitBtn.addEventListener("click", saveInfo);
 };
 
 changeInputPage = () => {
   console.log(questionStyle)
+  submitBtn.disabled = true;
   document.getElementById(`${questionStyle}-screen`).style.display = "block";
   let inputList = document.querySelectorAll(`#${questionStyle}-screen input`);
   for (let i = 0; i < inputList.length; i++) {
     inputList[i].value = "";
   }
+  console.log(document.querySelectorAll(`#${questionStyle}-screen select`));
+  let arr1 = document.querySelectorAll(`#${questionStyle}-screen input`);
+  let arr2 = document.querySelectorAll(`#${questionStyle}-screen select`);
+  let inputArray = [...document.querySelectorAll(`#${questionStyle}-screen input`), ...document.querySelectorAll(`#${questionStyle}-screen select`)];
+  document.getElementById(`${questionStyle}-screen`).addEventListener("input", (event) => {
+     for (let index = 0; index < inputArray.length; index++) {
+       if (inputArray[index].value === "") {
+          submitBtn.disabled = true;
+          return
+        }
+     }
+     submitBtn.disabled = false;
+  })
 };
 
 const saveInfo = (event) => {
@@ -157,7 +160,7 @@ const saveInfo = (event) => {
     document.getElementById("question-num").innerText = `הכנסת ${questionCounter} שאלות מתוך ${maxQuestions}`;
     changeButtonColor();
     window[questionStyle]();
-    checkStyleChange();
+    // checkStyleChange();
     // check if the user entered all the questions
     if (questionCounter === maxQuestions) {
       summary();
@@ -203,6 +206,7 @@ const checkValidInput = () => {
 };
 
 const summary = () => {
+  console.log(questionObj)
   document.getElementById("finish-screen").style.display = "block";
   document.getElementById("input-screen").style.display = "none";
   // Add check to see if the user want to add another Lomda
@@ -236,8 +240,8 @@ var multiple = () => {
 var binary = () => {
   questionObj[currBahad][currCourse][currLomda]["questions"].push({
     type: "binary",
-    question: String(document.getElementById(`multiple-question`).value),
-    correctAns: "ans" + String(document.getElementById("correctAns").value)
+    question: String(document.getElementById(`binary-question`).value),
+    correctAns: String(document.getElementById("binary-ans").value)
   });
 }
 

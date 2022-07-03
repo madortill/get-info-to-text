@@ -25,13 +25,12 @@ body {
 }
 
 .screen {
-    /* margin-top: 20vh; */
     height: fit-content;
     text-align: center;
     height: fit-content;
     position: absolute;
     left: 50%;
-    top: 45%;
+    top: 50%;
     transform: translate(-50%, -50%);
     width: 95%;
 }
@@ -46,21 +45,10 @@ body {
 }
 
 
-select {
+.dropdown {
     margin: 3vh 1vw 5vh 1vw;
     font-size: 4vmin;
     border-radius: 0.2em;
-}
-
-#input-screen input {
-    margin: 3vh 1vw;
-    font-size: 3vmin;
-    border-radius: 0.2em;
-    width: 20vw; 
-}
-
-#input-screen input[type="number"] {
-    width: 6vw;
 }
 
 select:disabled,
@@ -68,14 +56,15 @@ button:disabled {
     background-color: rgb(251, 195, 203);
 }
 
-/* option {
-    background-color: blueviolet;
-    border-radius: 2.5em;
-    border: none;
-} */
+.text-input {
+    margin: 3vh 1vw;
+    font-size: 3vmin;
+    border-radius: 0.2em;
+    width: 20vw; 
+}
 
-.input-screen {
-    display: none;
+.num-input {
+    width: 6vw;
 }
 
 .btn {
@@ -91,4 +80,18 @@ button:disabled {
 .question-num {
     font-size: 2vmin;
     margin-bottom: 1vh;
+}
+
+.radio {
+        border: 0px;
+        width: 2vw;
+        height: 2em;
+}
+
+.radio-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+    width: 48%;
+    margin: auto;
 }
