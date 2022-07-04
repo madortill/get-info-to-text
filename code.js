@@ -11,19 +11,21 @@ const COURSES = {
 
 const LOMDOT = {
   tools: { name: "כלים", questions: 24 },
-  mitztainim: { name: "מצטיינים", questions: 6 },
+  mitztainim: { name: "מצטיינים", questions: 10},
   davidShower: { name: "דוד מתקלח", questions: 10 },
+  tableTask: { name: "משימת שולחן", sortGroups: 2}
 };
-const QUESTION_TYPES = ["multiple", "binary"];
+// const QUESTION_TYPES = ["questions", "sortGroups", "completeSentence"];
+
 let questionObj;
 let questionCounter = 0;
-let currQuestionCounter = 0;
-let maxQuestions = 3; /* change later */
+let maxQuestions; /* change later */
 let questionStyle = "multiple"; /* change later */
 let currBahad;
 let currCourse;
 let currLomda;
 let submitBtn;
+let itemCounter = 0;
 
 window.addEventListener("load", () => {
   handleFirstPage();
@@ -33,44 +35,22 @@ window.addEventListener("load", () => {
 
 const handleFirstPage = () => {
   for (key in COURSES) {
-    document
-      .getElementById("bahad")
-      .append(
-        El("option", { attributes: { value: `${key}` } }, `${addSpace(key)}`)
-      );
+    document.getElementById("bahad").append(El("option", { attributes: { value: `${key}` } }, `${addSpace(key)}`));
   }
-  document
-    .getElementById("bahad")
-    .addEventListener("input", addCourseSelection);
+  document.getElementById("bahad").addEventListener("input", addCourseSelection);
 };
 
 const addCourseSelection = () => {
   document.getElementById("course").disabled = false;
   document.getElementById("course").innerHTML = "";
-  document
-    .getElementById("course")
-    .append(
-      El(
-        "option",
-        { attributes: { value: ``, disabled: "", selected: "" } },
-        `איזה קורס אתם מעבירים?`
-      )
-    );
+  document.getElementById("course").append(El("option", { attributes: { value: ``, disabled: "", selected: "" } },`איזה קורס אתם מעבירים?`));
   let courseList = COURSES[document.getElementById("bahad").value];
   for (course in courseList) {
-    document
-      .getElementById("course")
-      .append(
-        El(
-          "option",
-          { attributes: { value: `${courseList[course]}` } },
-          `${addSpace(courseList[course])}`
-        )
+    document.getElementById("course").append(
+        El("option",{ attributes: { value: `${courseList[course]}` } },`${addSpace(courseList[course])}`)
       );
   }
-  document
-    .getElementById("course")
-    .addEventListener("input", addLomdaSelection);
+  document.getElementById("course").addEventListener("input", addLomdaSelection);
 };
 
 const addLomdaSelection = () => {
@@ -79,14 +59,8 @@ const addLomdaSelection = () => {
   document.getElementById("lomda").append(El("option", { attributes: { value: ``, disabled: "", selected: "" } },`לאיזו לומדה תרצו להכניס שאלות?`)
     );
   for (key in LOMDOT) {
-    document
-      .getElementById("lomda")
-      .append(
-        El(
-          "option",
-          { attributes: { value: `${key}` } },
-          `לומדת ${LOMDOT[key]["name"]}`
-        )
+    document.getElementById("lomda").append(
+      El("option",{ attributes: { value: `${key}` } },`לומדת ${LOMDOT[key]["name"]}`)
       );
   }
   document.getElementById("lomda").addEventListener("input", () => {
@@ -100,47 +74,58 @@ const addSpace = (phrase) => {
 };
 
 const toInput = () => {
-  // Initiate variables
-  currBahad = document.getElementById("bahad").value;
-  currCourse = document.getElementById("course").value;
-  currLomda = document.getElementById("lomda").value;
-  submitBtn = document.getElementById("submit");
-  questionCounter = 0;
-  currQuestionCounter = 0;
-  document.getElementById("open-screen").style.display = "none";
-  // Computes the amount of all the questions
-  maxQuestions = Number(LOMDOT[currLomda]["questions"]);
-  document.getElementById("question-num").innerText = `הכנסת ${questionCounter} שאלות מתוך ${maxQuestions}`;
-  questionObj = {
-    [currBahad]: {
-      [currCourse]: {
-        [currLomda]: {
-          questions: [],
+  if (document.getElementById("lomda").value !== "" && document.getElementById("course").value !== "" && document.getElementById("bahad").value !== "") {
+    // Initiate variables
+    document.getElementById("to-input").removeEventListener("click", toInput);
+    currBahad = document.getElementById("bahad").value;
+    currCourse = document.getElementById("course").value;
+    currLomda = document.getElementById("lomda").value;
+    submitBtn = document.getElementById("submit");
+    questionCounter = 0;
+    document.getElementById("open-screen").style.display = "none";
+    if (LOMDOT[currLomda].questions !== undefined) {
+      maxQuestions = Number(LOMDOT[currLomda]["questions"]);
+      document.getElementById("question-num").innerText = `הכנסת ${questionCounter} שאלות מתוך ${maxQuestions}`;
+      questionObj = {
+        [currBahad]: {
+          [currCourse]: {
+            [currLomda]: {
+              questions: [],
+            },
+          },
         },
-      },
-    },
-  };
-  document.getElementById("input-screen").style.display = "block";
-  document.getElementById("type-of-question").addEventListener("input", (event) => {
-    document.getElementById(`${questionStyle}-screen`).style.display = "none";
-    questionStyle = document.getElementById("type-of-question").value;
-    changeInputPage();
-  });
-  // changeInputPage();
-  submitBtn.addEventListener("click", saveInfo);
+      };
+      document.getElementById("question-screen").style.display = "block";
+      document.getElementById("type-of-question").addEventListener("input", (event) => {
+        document.getElementById(`${questionStyle}-screen`).style.display = "none";
+        questionStyle = document.getElementById("type-of-question").value;
+        changeInputPage();
+      });
+      submitBtn.addEventListener("click", saveInfo);
+    } else if (LOMDOT[currLomda].sortGroups > 0) {
+      sortPage();
+      questionObj = {
+        [currBahad]: {
+          [currCourse]: {
+            [currLomda]: {
+              sortGroups: {},
+            },
+          },
+        },
+      };
+      questionObj[currBahad][currCourse][currLomda].sortGroups.drag = []
+    }
+  } else {
+    alert("לא כל השדות מלאים");
+  }
 };
 
 changeInputPage = () => {
-  console.log(questionStyle)
-  submitBtn.disabled = true;
   document.getElementById(`${questionStyle}-screen`).style.display = "block";
   let inputList = document.querySelectorAll(`#${questionStyle}-screen input`);
   for (let i = 0; i < inputList.length; i++) {
     inputList[i].value = "";
   }
-  console.log(document.querySelectorAll(`#${questionStyle}-screen select`));
-  let arr1 = document.querySelectorAll(`#${questionStyle}-screen input`);
-  let arr2 = document.querySelectorAll(`#${questionStyle}-screen select`);
   let inputArray = [...document.querySelectorAll(`#${questionStyle}-screen input`), ...document.querySelectorAll(`#${questionStyle}-screen select`)];
   document.getElementById(`${questionStyle}-screen`).addEventListener("input", (event) => {
      for (let index = 0; index < inputArray.length; index++) {
@@ -154,24 +139,33 @@ changeInputPage = () => {
 };
 
 const saveInfo = (event) => {
-  if (checkValidInput()) {
-    currQuestionCounter++;
+  if (checkValidInput()) {;
     questionCounter++;
     document.getElementById("question-num").innerText = `הכנסת ${questionCounter} שאלות מתוך ${maxQuestions}`;
     changeButtonColor();
     window[questionStyle]();
-    // checkStyleChange();
-    // check if the user entered all the questions
     if (questionCounter === maxQuestions) {
-      summary();
+      if (LOMDOT[currLomda].sortGroups > 0) {
+        sortPage();
+        questionObj[currBahad][currCourse][currLomda].sortGroups = {};
+      } else if (LOMDOT[currLomda].completeSentence > 0) {
+        // code
+      } else {
+        createFile();
+      }
     } else {
       changeInputPage();
     }
   }
 };
 
+const checkValidInput = () => {
+  return true;
+}
+
 const changeButtonColor = () => {
     // change submit button color
+    submitBtn.disabled = false;
     submitBtn.removeEventListener("click", saveInfo);
     submitBtn.innerText = "נוסף!";
     submitBtn.style.backgroundColor = "green";
@@ -179,36 +173,113 @@ const changeButtonColor = () => {
       submitBtn.innerText = "הוספה";
       submitBtn.style.backgroundColor = "rgb(196, 104, 196)";
       submitBtn.addEventListener("click", saveInfo);
+      submitBtn.disabled = true;
     }, 1000);
 }
 
-const checkStyleChange = () => {
-  // Check if need to change the type of questions
-  if (currQuestionCounter === Number(LOMDOT[currLomda]["questions"][questionStyle])) {
-    currQuestionCounter = 0;
-    document.getElementById(`${questionStyle}-screen`).style.display = "none";
-    let currIndex = QUESTION_TYPES.findIndex(item => item === questionStyle) + 1;
-    questionStyle = QUESTION_TYPES[currIndex];
-    while (LOMDOT[currLomda]["questions"][questionStyle] === undefined) {
-      currIndex = QUESTION_TYPES.findIndex(item => item === questionStyle) + 1;
-      questionStyle = QUESTION_TYPES[currIndex];
-      if (currIndex === QUESTION_TYPES.length) {
-        summary();
-        break;
-      }
+const sortPage = () => {
+  document.getElementById("sort-screen").style.display = "block";
+  for (let groupCounter = 0; groupCounter < LOMDOT[currLomda].sortGroups; groupCounter++) {
+    document.getElementById("group-container").appendChild(
+      El("span", {cls: "open-text"}, `${groupCounter + 1}.`,
+      El("input", {id: `group${groupCounter}`, cls: "text-input"})))
     }
+  document.getElementById("group-container").appendChild(El("button", {id: `group-submit`, cls: "btn", listeners: {click: showItems}}, "הקבוצות מוכנות?"))
+}
+
+const showItems = () => {
+  if (checkValidSort()) {
+    document.getElementById("group-submit").removeEventListener("click", showItems);
+    document.getElementById(`group-container`).style.display = "none";
+    // Add group names
+    questionObj[currBahad][currCourse][currLomda].sortGroups.drop = [];
+    document.getElementById("group-names").innerText = `הקבוצות שבחרת הן: `
+    for (let groupCounter = 0; groupCounter < LOMDOT[currLomda].sortGroups; groupCounter++) {
+      document.getElementById("group-names").innerText += ` ${document.getElementById(`group${groupCounter}`).value}, `;
+      questionObj[currBahad][currCourse][currLomda].sortGroups.drop.push(document.getElementById(`group${groupCounter}`).value);
+    }
+    document.getElementById("group-names").innerText = document.getElementById("group-names").innerText.replace(/.$/,".");
+    // Add buttons and event listeners to inputs
+    itemCounter = -1;
+    document.getElementById("sort-screen").append(El("button", {cls: "sort-btn", id:"add-item", listeners: {"click": addItem}, attributes: {disabled: true}}, "הוספת פריט"));
+    document.getElementById("sort-screen").append(El("button", {cls: "sort-btn", id: "sort-submit", listeners: {"click": () => {addItem(); createFile();}}, attributes: {disabled: true}}, "סיימתי"));
+    addItem()
   }
 }
 
-const checkValidInput = () => {
-  // Change - Make sure the user does not leave empty spaces
-  return true;
-};
+const disableBtn = () => {
+  let inputArray = [...document.querySelectorAll("#items-container input"), ...document.querySelectorAll("#items-container select")];
+  for (let index = 0; index < inputArray.length; index++) {
+    if (inputArray[index].value === "") {
+      document.getElementById("add-item").disabled = true;
+      document.getElementById("sort-submit").disabled = true;
+      return false;
+    } 
+  }
+  document.getElementById("add-item").disabled = false;
+  document.getElementById("sort-submit").disabled = false;
+}
 
-const summary = () => {
+const addItem = () => {
+  itemCounter++;
+  let minusImg = itemCounter > 0 ? El("img", {attributes: {src: "assets/media/minus.png"}, cls: "minus", listeners: {"click": removeItem}}): "";
+  document.getElementById("items-container").append(
+    El("div", {cls:"item"},
+    minusImg,
+    El("span", {cls:"open-text"}, `${itemCounter+1}.`),
+    El("input", {attributes: {"type": "text"}, id: `item${itemCounter}-name`, cls: "dropdown"}),
+    // Select a group
+    El("select", {cls: "dropdown", id: `item${itemCounter}-group`}, El("option", {attributes: {disabled: true, selected:true, value:""}}, "לאיזו קבוצה לשייך?"))));
+  for (let optionCounter = 0; optionCounter < LOMDOT[currLomda].sortGroups; optionCounter++) {
+    document.getElementById(`item${itemCounter}-group`).append(
+      El("option", {attributes: {value: optionCounter + 1}}, document.getElementById(`group${optionCounter}`).value)
+      );
+  }
+    document.getElementById("add-item").disabled = true;
+    document.getElementById("sort-submit").disabled = true;
+    document.getElementById(`item${itemCounter}-group`).addEventListener("input", disableBtn);
+    document.getElementById(`item${itemCounter}-name`).addEventListener("input", disableBtn);
+    saveSort();
+}
+
+const removeItem = (event) => {
+  event.currentTarget.parentElement.remove();
+  disableBtn();
+  itemCounter--;
+  let spanArray = document.querySelectorAll("#items-container span");
+  let inputArray = document.querySelectorAll("#items-container input");
+  let selectArray = document.querySelectorAll("#items-container select");
+  for (let index = 0; index < spanArray.length; index++) {
+    spanArray[index].innerText = `${index + 1}.`;
+    inputArray[index].setAttribute("id", `item${index}-name`);
+    selectArray[index].setAttribute("id", `item${index}-group`);
+  }
+}
+
+const saveSort = () => {
+  questionObj[currBahad][currCourse][currLomda].sortGroups.drag = []
+  for (let i = 0; i < itemCounter; i++) {
+    questionObj[currBahad][currCourse][currLomda].sortGroups.drag.push({
+      drag: document.getElementById(`item${i}-name`).value,
+      group: Number(document.getElementById(`item${i}-group`).value)
+    })
+  }
   console.log(questionObj)
+}
+
+const checkValidSort = () => {
+  return true;
+}
+
+const createFile = () => {
+  if (document.getElementById("sort-submit") !== null) {
+    document.getElementById("sort-submit").disabled;
+    document.getElementById("sort-screen").style.display = "none";
+  } else {
+    submitBtn.removeEventListener("click", saveInfo);
+    document.getElementById("question-screen").style.display = "none";
+  }
   document.getElementById("finish-screen").style.display = "block";
-  document.getElementById("input-screen").style.display = "none";
   // Add check to see if the user want to add another Lomda
   let text = JSON.stringify(questionObj);
   let textFile = null;
@@ -241,7 +312,8 @@ var binary = () => {
   questionObj[currBahad][currCourse][currLomda]["questions"].push({
     type: "binary",
     question: String(document.getElementById(`binary-question`).value),
-    correctAns: String(document.getElementById("binary-ans").value)
+    correctAns: String(document.getElementById("binary-ans").value),
+    selectedAns: ""
   });
 }
 

@@ -82,16 +82,23 @@ button:disabled {
     margin-bottom: 1vh;
 }
 
-.radio {
-        border: 0px;
-        width: 2vw;
-        height: 2em;
+#item-container {
+    display: flex;
+    flex-direction: column;
 }
 
-.radio-container {
-    display: flex;
-    align-items: center;
-    justify-content: space-evenly;
-    width: 48%;
-    margin: auto;
+.sort-btn {
+    font-size: 3vmin;
+    margin: 2vh 1vw;
+    border-radius: 0.2em;
+    border: solid 1px;
+    padding: 1vh 1vw;
+    background-color: rgb(196, 104, 196);
+}
+
+.minus {
+    height: 2.5vh;
+    width: auto;
+    margin-left: 1vw;
+    cursor: pointer;
 }

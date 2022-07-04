@@ -26,7 +26,7 @@
         </select>
         <button id="to-input" class="btn" disabled>סיימתי!</button>
     </div>
-    <div class="screen none" id="input-screen">
+    <div class="screen none" id="question-screen">
         <div class="open-text">הכניסו את השאלה כדי להמשיך!</div>
         <div class="question-num" id="question-num"></div>
         <label for="type-of-question" class="open-text">בחרו את סוג השאלה המבוקש</label>
@@ -59,7 +59,7 @@
                     <input id="correctAns" type="number" min="1" max="4" class="num-input text-input"">
                 </div>
             </div>
-            <div class=" none" id="binary-screen">
+            <div class="none" id="binary-screen">
                     <div>
                         <label for="binary-question" class="open-text">שאלה:</label>
                         <input id="binary-question" type="text" class="text-input">
@@ -71,10 +71,24 @@
                         <option value="false">לא נכון</option>
                     </select>
                 </div>
-                <button id="submit" class="btn">הוספה</button>
-        </div>
+                <button id="submit" class="btn" disabled>הוספה</button>
+            </div>
+            <div class="screen none" id="sort-screen">
+                <div id="group-container">
+                    <div class="open-text">לאיזה קבוצות תרצו לחלק את הפריטים?</div>
+                </div>
+                <div id="group-names" class="open-text"></div>
+                <div id="items-container"></div>
+                <!-- <div id="item1" class="item">
+                    <input id="item1-name" type="text">
+                    <select id="item1-group">
+                        <option>group1</option>
+                    </select>
+                </div> -->
+            </div>
         <div id="finish-screen" class="none">
-            <a download="questions.txt" id="downloadlink" style="display: none">Download</a>
+            <h1>Hello</h1>
+            <a download="questions.txt" id="downloadlink">Download</a>
         </div>
 </body>
 

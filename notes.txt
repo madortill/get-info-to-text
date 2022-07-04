@@ -3,7 +3,6 @@
 
 specials: 
 * rules: rule + is true? and sortToGroups 
-* tools - assign to a tool (could be inside the project)
 * hangman?
 * notes - open questions + notes
 * commanders - array of quotes
