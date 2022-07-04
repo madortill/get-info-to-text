@@ -161,6 +161,7 @@ const saveInfo = (event) => {
 
 const checkValidInput = () => {
   return true;
+  // make sure there is text inside every input
 }
 
 const changeButtonColor = () => {
@@ -207,6 +208,11 @@ const showItems = () => {
   }
 }
 
+const checkValidSort = () => {
+  return true;
+  // make sure there are not two same names of group
+}
+
 const disableBtn = () => {
   let inputArray = [...document.querySelectorAll("#items-container input"), ...document.querySelectorAll("#items-container select")];
   for (let index = 0; index < inputArray.length; index++) {
@@ -237,8 +243,7 @@ const addItem = () => {
   }
     document.getElementById("add-item").disabled = true;
     document.getElementById("sort-submit").disabled = true;
-    document.getElementById(`item${itemCounter}-group`).addEventListener("input", disableBtn);
-    document.getElementById(`item${itemCounter}-name`).addEventListener("input", disableBtn);
+    document.getElementById(`sort-screen`).addEventListener("input", disableBtn);
     saveSort();
 }
 
@@ -265,10 +270,6 @@ const saveSort = () => {
     })
   }
   console.log(questionObj)
-}
-
-const checkValidSort = () => {
-  return true;
 }
 
 const createFile = () => {
