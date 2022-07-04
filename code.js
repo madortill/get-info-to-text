@@ -139,7 +139,6 @@ changeInputPage = () => {
 };
 
 const saveInfo = (event) => {
-  if (checkValidInput()) {;
     questionCounter++;
     document.getElementById("question-num").innerText = `הכנסת ${questionCounter} שאלות מתוך ${maxQuestions}`;
     changeButtonColor();
@@ -156,13 +155,8 @@ const saveInfo = (event) => {
     } else {
       changeInputPage();
     }
-  }
 };
 
-const checkValidInput = () => {
-  return true;
-  // make sure there is text inside every input
-}
 
 const changeButtonColor = () => {
     // change submit button color
