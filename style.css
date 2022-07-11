@@ -44,6 +44,15 @@ body {
     font-size: 4.5vmin;
 }
 
+.comment-text {
+    text-align: center;
+    font-size: 3vmin;
+    margin-bottom: 2vh;
+}
+
+.bold-red {
+    font-weight: bold;
+}
 
 .dropdown {
     margin: 3vh 1vw 5vh 1vw;
@@ -101,4 +110,12 @@ button:disabled {
     width: auto;
     margin-left: 1vw;
     cursor: pointer;
+}
+
+.tillder-text {
+    text-align: center;
+    font-size: 3vmin;
+    margin: 4vh 0 2vh;
+    /* text-decoration: red underline; */
+    background-color: rgb(245, 169, 53);
 }

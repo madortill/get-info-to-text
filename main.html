@@ -8,6 +8,8 @@
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="style.css">
+    <script src="sortToGroups.js"></script>
+    <script src="completeSentence.js"></script>
     <script src="code.js"></script>
 </head>
 
@@ -32,7 +34,7 @@
         <label for="type-of-question" class="open-text">בחרו את סוג השאלה המבוקש</label>
         <select id="type-of-question" class="dropdown">
             <option value="" disabled selected>בחרו</option>
-            <option value="binary">שאלת נכון/לא נכון</option>
+            <option value="binary" id="binary-option">שאלת נכון/לא נכון</option>
             <option value="multiple">שאלה אמריקאית</option>
         </select>
             <div class="none" id="multiple-screen">
@@ -76,6 +78,7 @@
             <div class="screen none" id="sort-screen">
                 <div id="group-container">
                     <div class="open-text">לאיזה קבוצות תרצו לחלק את הפריטים?</div>
+                    <div class="comment-text"><span class="bold-red">שימו לב!</span> אחרי שתלחצו על המשך לא תוכלו לשנות את הקבוצות.</div>
                 </div>
                 <div id="group-names" class="open-text"></div>
                 <div id="items-container"></div>
@@ -85,6 +88,9 @@
                         <option>group1</option>
                     </select>
                 </div> -->
+            </div>
+            <div class="screen none" id="sentence-screen">
+
             </div>
         <div id="finish-screen" class="none">
             <h1>Hello</h1>

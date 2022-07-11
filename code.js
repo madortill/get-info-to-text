@@ -13,7 +13,12 @@ const LOMDOT = {
   tools: { name: "כלים", questions: 24 },
   mitztainim: { name: "מצטיינים", questions: 10},
   davidShower: { name: "דוד מתקלח", questions: 10 },
-  tableTask: { name: "משימת שולחן", sortGroups: 2}
+  tablesTask: { name: "משימת שולחן", sortGroups: 2},
+  animals: {name: "חיות", questions: 10},
+  rules: {name: "חוקים", sortGroups: 3},
+  tillder: {name: "טילדר", questions: 10},
+  mapStorage: {name: "מפה", questions: 10},
+  asteroid: {name: "asteroid", questions: 10}
 };
 // const QUESTION_TYPES = ["questions", "sortGroups", "completeSentence"];
 
@@ -29,8 +34,12 @@ let itemCounter = 0;
 
 window.addEventListener("load", () => {
   handleFirstPage();
-  //   toInput();
-  //   document.getElementById("submit").addEventListener("click", insertFile);
+  // window.addEventListener('beforeunload', function (e) {
+  //   // Cancel the event
+  //   e.preventDefault(); // If you prevent default behavior in Mozilla Firefox prompt will always be shown
+  //   // Chrome requires returnValue to be set
+  //   e.returnValue = '';
+  // });
 });
 
 const handleFirstPage = () => {
@@ -96,11 +105,21 @@ const toInput = () => {
         },
       };
       document.getElementById("question-screen").style.display = "block";
-      document.getElementById("type-of-question").addEventListener("input", (event) => {
-        document.getElementById(`${questionStyle}-screen`).style.display = "none";
-        questionStyle = document.getElementById("type-of-question").value;
+      if (currLomda === "tillder") {
+        document.getElementById("type-of-question").value = "binary";
+        questionStyle = "binary";
+        document.getElementById('type-of-question').getElementsByTagName('option')[1].selected = 'selected';
+        document.getElementById("type-of-question").disabled = true;
         changeInputPage();
-      });
+        console.log(document.getElementById("question-screen").children[2])
+        document.getElementById("question-screen").insertBefore(El("div", {cls: "tillder-text"}, "ללומדה זו צריך להוסיף גם תמונות. את התמונות יש לשלוח למייל mador.till@gmail.com לפי סדר השאלות."), document.getElementById("question-screen").children[2])
+      } else {
+        document.getElementById("type-of-question").addEventListener("input", (event) => {
+          document.getElementById(`${questionStyle}-screen`).style.display = "none";
+          questionStyle = document.getElementById("type-of-question").value;
+          changeInputPage();
+        });
+      }
       submitBtn.addEventListener("click", saveInfo);
     } else if (LOMDOT[currLomda].sortGroups > 0) {
       sortPage();
@@ -114,6 +133,8 @@ const toInput = () => {
         },
       };
       questionObj[currBahad][currCourse][currLomda].sortGroups.drag = []
+    } else if (LOMDOT[completeSentence].length) {
+      showCompleteSentence();
     }
   } else {
     alert("לא כל השדות מלאים");
@@ -126,6 +147,7 @@ changeInputPage = () => {
   for (let i = 0; i < inputList.length; i++) {
     inputList[i].value = "";
   }
+  // Makes sure inputs are not empty
   let inputArray = [...document.querySelectorAll(`#${questionStyle}-screen input`), ...document.querySelectorAll(`#${questionStyle}-screen select`)];
   document.getElementById(`${questionStyle}-screen`).addEventListener("input", (event) => {
      for (let index = 0; index < inputArray.length; index++) {
@@ -135,7 +157,7 @@ changeInputPage = () => {
         }
      }
      submitBtn.disabled = false;
-  })
+  });
 };
 
 const saveInfo = (event) => {
@@ -147,7 +169,7 @@ const saveInfo = (event) => {
       if (LOMDOT[currLomda].sortGroups > 0) {
         sortPage();
         questionObj[currBahad][currCourse][currLomda].sortGroups = {};
-      } else if (LOMDOT[currLomda].completeSentence > 0) {
+      } else if (LOMDOT[currLomda].completeSentence.length > 0) {
         // code
       } else {
         createFile();
@@ -167,104 +189,15 @@ const changeButtonColor = () => {
     setTimeout(() => {
       submitBtn.innerText = "הוספה";
       submitBtn.style.backgroundColor = "rgb(196, 104, 196)";
+      if (questionCounter === maxQuestions - 1) {
+        submitBtn.innerText = "הוספה והמשך";
+      }
       submitBtn.addEventListener("click", saveInfo);
       submitBtn.disabled = true;
     }, 1000);
 }
 
-const sortPage = () => {
-  document.getElementById("sort-screen").style.display = "block";
-  for (let groupCounter = 0; groupCounter < LOMDOT[currLomda].sortGroups; groupCounter++) {
-    document.getElementById("group-container").appendChild(
-      El("span", {cls: "open-text"}, `${groupCounter + 1}.`,
-      El("input", {id: `group${groupCounter}`, cls: "text-input"})))
-    }
-  document.getElementById("group-container").appendChild(El("button", {id: `group-submit`, cls: "btn", listeners: {click: showItems}}, "הקבוצות מוכנות?"))
-}
 
-const showItems = () => {
-  if (checkValidSort()) {
-    document.getElementById("group-submit").removeEventListener("click", showItems);
-    document.getElementById(`group-container`).style.display = "none";
-    // Add group names
-    questionObj[currBahad][currCourse][currLomda].sortGroups.drop = [];
-    document.getElementById("group-names").innerText = `הקבוצות שבחרת הן: `
-    for (let groupCounter = 0; groupCounter < LOMDOT[currLomda].sortGroups; groupCounter++) {
-      document.getElementById("group-names").innerText += ` ${document.getElementById(`group${groupCounter}`).value}, `;
-      questionObj[currBahad][currCourse][currLomda].sortGroups.drop.push(document.getElementById(`group${groupCounter}`).value);
-    }
-    document.getElementById("group-names").innerText = document.getElementById("group-names").innerText.replace(/.$/,".");
-    // Add buttons and event listeners to inputs
-    itemCounter = -1;
-    document.getElementById("sort-screen").append(El("button", {cls: "sort-btn", id:"add-item", listeners: {"click": addItem}, attributes: {disabled: true}}, "הוספת פריט"));
-    document.getElementById("sort-screen").append(El("button", {cls: "sort-btn", id: "sort-submit", listeners: {"click": () => {addItem(); createFile();}}, attributes: {disabled: true}}, "סיימתי"));
-    addItem()
-  }
-}
-
-const checkValidSort = () => {
-  return true;
-  // make sure there are not two same names of group
-}
-
-const disableBtn = () => {
-  let inputArray = [...document.querySelectorAll("#items-container input"), ...document.querySelectorAll("#items-container select")];
-  for (let index = 0; index < inputArray.length; index++) {
-    if (inputArray[index].value === "") {
-      document.getElementById("add-item").disabled = true;
-      document.getElementById("sort-submit").disabled = true;
-      return false;
-    } 
-  }
-  document.getElementById("add-item").disabled = false;
-  document.getElementById("sort-submit").disabled = false;
-}
-
-const addItem = () => {
-  itemCounter++;
-  let minusImg = itemCounter > 0 ? El("img", {attributes: {src: "assets/media/minus.png"}, cls: "minus", listeners: {"click": removeItem}}): "";
-  document.getElementById("items-container").append(
-    El("div", {cls:"item"},
-    minusImg,
-    El("span", {cls:"open-text"}, `${itemCounter+1}.`),
-    El("input", {attributes: {"type": "text"}, id: `item${itemCounter}-name`, cls: "dropdown"}),
-    // Select a group
-    El("select", {cls: "dropdown", id: `item${itemCounter}-group`}, El("option", {attributes: {disabled: true, selected:true, value:""}}, "לאיזו קבוצה לשייך?"))));
-  for (let optionCounter = 0; optionCounter < LOMDOT[currLomda].sortGroups; optionCounter++) {
-    document.getElementById(`item${itemCounter}-group`).append(
-      El("option", {attributes: {value: optionCounter + 1}}, document.getElementById(`group${optionCounter}`).value)
-      );
-  }
-    document.getElementById("add-item").disabled = true;
-    document.getElementById("sort-submit").disabled = true;
-    document.getElementById(`sort-screen`).addEventListener("input", disableBtn);
-    saveSort();
-}
-
-const removeItem = (event) => {
-  event.currentTarget.parentElement.remove();
-  disableBtn();
-  itemCounter--;
-  let spanArray = document.querySelectorAll("#items-container span");
-  let inputArray = document.querySelectorAll("#items-container input");
-  let selectArray = document.querySelectorAll("#items-container select");
-  for (let index = 0; index < spanArray.length; index++) {
-    spanArray[index].innerText = `${index + 1}.`;
-    inputArray[index].setAttribute("id", `item${index}-name`);
-    selectArray[index].setAttribute("id", `item${index}-group`);
-  }
-}
-
-const saveSort = () => {
-  questionObj[currBahad][currCourse][currLomda].sortGroups.drag = []
-  for (let i = 0; i < itemCounter; i++) {
-    questionObj[currBahad][currCourse][currLomda].sortGroups.drag.push({
-      drag: document.getElementById(`item${i}-name`).value,
-      group: Number(document.getElementById(`item${i}-group`).value)
-    })
-  }
-  console.log(questionObj)
-}
 
 const createFile = () => {
   if (document.getElementById("sort-submit") !== null) {
