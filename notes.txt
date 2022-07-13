@@ -5,5 +5,11 @@ specials:
 * hangman?
 * notes - open questions + notes
 * commanders - array of quotes
+* src tillder
 
 back button to change group selection + warning it will delete everything.
+
+I didn't do commanders
+
+make questions with overflow (add to same screen) + rewind screen
+change radio buttons in sentence

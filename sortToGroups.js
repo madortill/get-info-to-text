@@ -5,7 +5,7 @@ const sortPage = () => {
         El("span", {cls: "open-text"}, `${groupCounter + 1}.`,
         El("input", {id: `group${groupCounter}`, cls: "text-input"})))
       }
-      document.getElementById("group-container").appendChild(El("button", {attributes: {disabled: true}, id: `group-submit`, cls: "btn", listeners: {click: showItems}}, "הקבוצות מוכנות?"))
+      document.getElementById("group-container").appendChild(El("button", {attributes: {disabled: true}, id: `group-submit`, cls: "btn", listeners: {click: showItems}}, "הקבוצות מוכנות"))
       // Makes sure inputs are not empty
       let inputArray = document.querySelectorAll(`#sort-screen input`);
       document.getElementById(`sort-screen`).addEventListener("input", (event) => {
@@ -34,7 +34,7 @@ const sortPage = () => {
       // Add buttons and event listeners to inputs
       itemCounter = -1;
       document.getElementById("sort-screen").append(El("button", {cls: "sort-btn", id:"add-item", listeners: {"click": addItem}}, "הוספת פריט"));
-      document.getElementById("sort-screen").append(El("button", {cls: "sort-btn", id: "sort-submit", listeners: {"click": () => {addItem(); createFile();}}, attributes: {disabled: true}}, "סיימתי"));
+      document.getElementById("sort-screen").append(El("button", {cls: "sort-btn", id: "sort-submit", listeners: {"click": saveSort}, attributes: {disabled: true}}, "סיימתי"));
       addItem()
     } else {
       alert("נתת לשתי קבוצות את אותו השם. צריך להחליף את השמות.");
@@ -87,7 +87,6 @@ const sortPage = () => {
     }
       document.getElementById("sort-submit").disabled = true;
       document.getElementById(`sort-screen`).addEventListener("input", disableSortBtn);
-      saveSort();
   }
   
   const removeItem = (event) => {
@@ -105,6 +104,7 @@ const sortPage = () => {
   }
   
   const saveSort = () => {
+    itemCounter++;
     questionObj[currBahad][currCourse][currLomda].sortGroups.drag = []
     for (let i = 0; i < itemCounter; i++) {
       questionObj[currBahad][currCourse][currLomda].sortGroups.drag.push({
@@ -112,5 +112,5 @@ const sortPage = () => {
         group: Number(document.getElementById(`item${i}-group`).value)
       })
     }
-    console.log(questionObj)
+    createFile();
   }

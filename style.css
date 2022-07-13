@@ -27,7 +27,6 @@ body {
 .screen {
     height: fit-content;
     text-align: center;
-    height: fit-content;
     position: absolute;
     left: 50%;
     top: 50%;
@@ -84,6 +83,7 @@ button:disabled {
     border: solid 1px;
     padding: 1vh 5vw;
     background-color: rgb(196, 104, 196);
+    user-select: none;
 }
 
 .question-num {
@@ -103,6 +103,7 @@ button:disabled {
     border: solid 1px;
     padding: 1vh 1vw;
     background-color: rgb(196, 104, 196);
+    user-select: none;
 }
 
 .minus {
@@ -118,4 +119,139 @@ button:disabled {
     margin: 4vh 0 2vh;
     /* text-decoration: red underline; */
     background-color: rgb(245, 169, 53);
+}
+
+.sentence-input {
+    margin: 0 1vw;
+    font-size: 3vmin;
+    border-radius: 0.2em;
+    width: 20vw; 
+    padding-right: 0.6vw;
+}
+
+.word-input {
+    width: 10vw;
+}
+
+.flex {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    flex-wrap: wrap;
+}
+
+#sentence-submit {
+    order: 1;
+}
+
+.sentence-option-container {
+    /* width: 90%; */
+    margin: 1.5vh 0 1.5vh;
+    direction: rtl;
+    /* width: 95%; */
+    /* max-height: 30vh;
+    overflow: auto; */
+}
+
+.scroll-bar {
+    max-height: 30vh;
+    overflow: auto;
+    direction: ltr;
+    width: 65%;
+    margin: 1.5vh 0 1.5vh;
+}
+
+.sentence-container {
+    border: solid black 2px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    padding: 2vh 0;
+    transition: height 2s;
+    margin: 1vh 0;
+}
+
+.sentence-screen {
+    flex-direction: column;
+    height: 80%;
+    margin-bottom: 0;
+}
+
+.add-option {
+    /* order: 1; */
+    width: 100%;
+}
+
+.add-option-btn {
+    width: 20vw;
+    padding: 0.5vh 0.5vw;
+    margin: 2vh auto;
+    user-select: none;
+}
+
+.item {
+    margin-right: 1vw;
+}
+
+.radio {
+    border-radius: 50%;
+}
+
+/* radio buttons */
+[type="radio"]:checked,
+[type="radio"]:not(:checked) {
+    position: absolute;
+    right: -9999px;
+}
+
+[type="radio"]:checked + label,
+[type="radio"]:not(:checked) + label
+{
+    position: relative;
+    padding-right: 28px;
+    cursor: pointer;
+    line-height: 20px;
+    display: inline-block;
+    color: #666;
+}
+
+[type="radio"]:checked + label:before,
+[type="radio"]:not(:checked) + label:before {
+    content: '';
+    position: absolute;
+    right: 0;
+    top: 0;
+    width: 18px;
+    height: 18px;
+    border: 1px solid #ddd;
+    border-radius: 100%;
+    background: #fff;
+}
+
+[type="radio"]:checked + label:after,
+[type="radio"]:not(:checked) + label:after {
+    content: '';
+    width: 12px;
+    height: 12px;
+    background: #F87DA9;
+    position: absolute;
+    top: 4px;
+    right: 4px;
+    border-radius: 100%;
+    -webkit-transition: all 0.2s ease;
+    transition: all 0.2s ease;
+}
+
+[type="radio"]:not(:checked) + label:after {
+    opacity: 0;
+    -webkit-transform: scale(0);
+    transform: scale(0);
+}
+
+[type="radio"]:checked + label:after {
+    opacity: 1;
+    -webkit-transform: scale(1);
+    transform: scale(1);
 }

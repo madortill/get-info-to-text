@@ -18,7 +18,8 @@ const LOMDOT = {
   rules: {name: "חוקים", sortGroups: 3},
   tillder: {name: "טילדר", questions: 10},
   mapStorage: {name: "מפה", questions: 10},
-  asteroid: {name: "asteroid", questions: 10}
+  asteroid: {name: "אסטרואיד", questions: 10},
+  complete: {name: "ניסיון", completeSentence: 3}
 };
 // const QUESTION_TYPES = ["questions", "sortGroups", "completeSentence"];
 
@@ -133,8 +134,8 @@ const toInput = () => {
         },
       };
       questionObj[currBahad][currCourse][currLomda].sortGroups.drag = []
-    } else if (LOMDOT[completeSentence].length) {
-      showCompleteSentence();
+    } else if (LOMDOT[currLomda].completeSentence > 0) {
+      goToSentences();
     }
   } else {
     alert("לא כל השדות מלאים");
@@ -169,7 +170,7 @@ const saveInfo = (event) => {
       if (LOMDOT[currLomda].sortGroups > 0) {
         sortPage();
         questionObj[currBahad][currCourse][currLomda].sortGroups = {};
-      } else if (LOMDOT[currLomda].completeSentence.length > 0) {
+      } else if (LOMDOT[currLomda].completeSentence > 0) {
         // code
       } else {
         createFile();
@@ -200,6 +201,7 @@ const changeButtonColor = () => {
 
 
 const createFile = () => {
+  console.log(questionObj);
   if (document.getElementById("sort-submit") !== null) {
     document.getElementById("sort-submit").disabled;
     document.getElementById("sort-screen").style.display = "none";
