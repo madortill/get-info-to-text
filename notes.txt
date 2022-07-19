@@ -13,3 +13,5 @@ I didn't do commanders
 
 make questions with overflow (add to same screen) + rewind screen
 change radio buttons in sentence
+
+שהתשובה הנכונה בהשלמת משפטים תהיה המילה הראשונה ויהי בורדר ירוק ו placeholder

@@ -22,6 +22,7 @@ body {
     background: linear-gradient(221deg, rgb(251, 195, 203) 20%, rgb(224, 186, 224) 60%);
     /* background: linear-gradient(221deg, orange 5%, rgb(253, 201, 103) 40%, rgb(238, 238, 153) 80%); */
     background-size: 100% 100%;
+    background-attachment: scroll;
 }
 
 .screen {

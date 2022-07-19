@@ -67,6 +67,7 @@ const addOptionItem = (event) => {
     document.getElementById("sentence-submit").disabled = true;
 
   }
+
   
   // IF THERE ARE MORE THAN 10 QUESTIONS, NEED TO CHANGE divId
   const removeSentenceItem = (event) => {

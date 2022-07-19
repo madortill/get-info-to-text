@@ -10,7 +10,7 @@ const COURSES = {
 };
 
 const LOMDOT = {
-  tools: { name: "כלים", questions: 24 },
+  tools: { name: "כלים", questions: 18 },
   mitztainim: { name: "מצטיינים", questions: 10},
   davidShower: { name: "דוד מתקלח", questions: 10 },
   tablesTask: { name: "משימת שולחן", sortGroups: 2},
@@ -35,14 +35,15 @@ let itemCounter = 0;
 
 window.addEventListener("load", () => {
   handleFirstPage();
-  // window.addEventListener('beforeunload', function (e) {
-  //   // Cancel the event
-  //   e.preventDefault(); // If you prevent default behavior in Mozilla Firefox prompt will always be shown
-  //   // Chrome requires returnValue to be set
-  //   e.returnValue = '';
-  // });
+  window.addEventListener('beforeunload', function (e) {
+    // Cancel the event
+    e.preventDefault(); // If you prevent default behavior in Mozilla Firefox prompt will always be shown
+    // Chrome requires returnValue to be set
+    e.returnValue = '';
+  });
 });
 
+// Dropdown
 const handleFirstPage = () => {
   for (key in COURSES) {
     document.getElementById("bahad").append(El("option", { attributes: { value: `${key}` } }, `${addSpace(key)}`));
